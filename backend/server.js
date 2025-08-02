@@ -12,7 +12,7 @@ const app = express();
 // Enhanced CORS configuration
 app.use(cors({
   origin: [
-    'https://playful-tulumba-6f68df.netlify.app', // Your Netlify URL
+    'https://lmsasignment.netlify.app/', // Your Netlify URL
     'http://localhost:3000' // For local development
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
