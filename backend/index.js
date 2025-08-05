@@ -1,47 +1,37 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require("path"); 
+const path = require('path');
 require('dotenv').config();
-
-const courseRoutes = require('./routes/courses');
-const enrollmentRoutes = require('./routes/enrollments');
 
 const app = express();
 
-// CORS Configuration (update with your frontend URLs)
-const corsOptions = {
-  origin: ['http://localhost:5173', 'https://your-netlify-app.netlify.app'],
-  credentials: true
-};
-app.use(cors(corsOptions));
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/courses', courseRoutes);
-app.use('/api/enrollments', enrollmentRoutes);
+// API Routes
+app.use('/api/courses', require('./routes/courses'));
+app.use('/api/enrollments', require('./routes/enrollments'));
 
-// API Info Endpoint
-app.get('/', (req, res) => {
-  res.json({
-    message: "LMS Backend API",
-    endpoints: {
-      courses: "/api/courses",
-      enrollments: "/api/enrollments"
-    }
-  });
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/lms')
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB error:', err));
-
-// Static Files (updated path resolution)
-app.use(express.static(path.join(path.resolve(), "frontend/dist")));
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error('❌ MongoDB error:', err));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
 
 // const express = require('express');
 // const mongoose = require('mongoose');

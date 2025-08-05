@@ -4,19 +4,21 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon backend/index.js",
-    "seed": "node seed.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "nodemon backend/index.js"
+    "start": "nodemon backend/index.js",
+    "seed": "node --loader esm backend/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "This is a full-stack MERN (MongoDB, Express, React, Node.js) web application that allows users to: - View available courses. - Enroll in courses. - Manage course and enrollment data through a backend API.",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0",
+    "express": "^4.18.2",
     "mongoose": "^8.17.0",
-    "nodemon": "^3.1.10"
-  }
+    "nodemon": "^3.1.10",
+    "path-to-regexp": "^6.2.1"
+  },
+  "devDependencies": {}
 }
