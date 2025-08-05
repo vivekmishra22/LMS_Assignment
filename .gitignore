@@ -3,8 +3,6 @@
 #inside root 
 node_modules
 .env
-package.json
-package-lock.json
 
 ### Node.js (Backend) ###
 # Environment variables
