@@ -26,22 +26,24 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin) return callback(null, true); // allow non-browser requests (e.g., Postman)
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error('Blocked by CORS:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  // credentials: true,
+  credentials: true,
   optionsSuccessStatus: 200 // For legacy browser support
 };
 
 // app.use(cors());
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.options('*', cors(corsOptions));
 
 // API Routes
 app.use('/api/courses', require('./routes/courses'));
