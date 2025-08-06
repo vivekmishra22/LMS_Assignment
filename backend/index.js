@@ -6,8 +6,41 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// const corsOptions = {
+//   origin: [
+//     'http://localhost:3000',
+//     'http://localhost:5173',
+//     'http://localhost:8000',
+//     'https://lmsassignment.netlify.app',
+//     'https://lms-assignment-lij5.onrender.com'
+//   ],
+//   credentials: true,
+// };
+
+const allowedOrigins = [
+  'https://lms-assignment-lij5.onrender.com',
+  'https://lmsassignment.netlify.app',
+  'http://localhost:8000',
+  'http://localhost:3000'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  // credentials: true,
+  optionsSuccessStatus: 200 // For legacy browser support
+};
+
+// app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // API Routes
